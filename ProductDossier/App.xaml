@@ -1,0 +1,420 @@
+﻿<Application x:Class="ProductDossier.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="clr-namespace:ProductDossier"
+             xmlns:tree="clr-namespace:ProductDossier.UI.Tree"
+             xmlns:cmd="clr-namespace:ProductDossier.UI.Commands"
+             StartupUri="UI/Windows/MainWindow.xaml">
+
+    <Application.Resources>
+
+        <!-- Nunito из ресурсов проекта -->
+        <FontFamily x:Key="NunitoRegular">pack://application:,,,/Fonts/Nunito-Regular.ttf#Nunito</FontFamily>
+        <FontFamily x:Key="NunitoBold">pack://application:,,,/Fonts/Nunito-Bold.ttf#Nunito</FontFamily>
+
+        <!-- Шрифт по умолчанию для всех контролов -->
+        <Style TargetType="{x:Type Control}">
+            <Setter Property="FontFamily" Value="{StaticResource NunitoRegular}"/>
+            <Setter Property="FontSize" Value="18"/>
+        </Style>
+
+        <!-- TextBlock -->
+        <Style TargetType="{x:Type TextBlock}">
+            <Setter Property="FontFamily" Value="{StaticResource NunitoRegular}"/>
+            <Setter Property="FontSize" Value="18"/>
+        </Style>
+
+        <!-- Цвета -->
+        <SolidColorBrush x:Key="PdBlue" Color="#177EF3"/>
+        <SolidColorBrush x:Key="PdText" Color="#1D2B44"/>
+
+        <!-- Цвета для дерева (иерархия) -->
+        <SolidColorBrush x:Key="PdTreeProduct" Color="#E1E6EF"/>
+        <SolidColorBrush x:Key="PdTreeCategory" Color="#F1F4F8"/>
+        <SolidColorBrush x:Key="PdTreeDocRoot" Color="#CFE6FF"/>
+        <SolidColorBrush x:Key="PdTreeDocChild" Color="#E6F2FF"/>
+        <SolidColorBrush x:Key="PdTreeFile" Color="#D5F3FF"/>
+        <SolidColorBrush x:Key="PdTreeNoDocs" Color="#F4FAFF"/>
+        <SolidColorBrush x:Key="PdTreePillBorder" Color="#D4DEEE"/>
+
+
+        <!-- TreeView -->
+        <Style TargetType="{x:Type TreeView}">
+            <Style.Resources>
+                <!-- фон выделения (активный/неактивный) прозрачный -->
+                <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" Color="#00FFFFFF"/>
+                <SolidColorBrush x:Key="{x:Static SystemColors.InactiveSelectionHighlightBrushKey}" Color="#00FFFFFF"/>
+
+                <!-- цвет текста при выделении обычный -->
+                <SolidColorBrush x:Key="{x:Static SystemColors.HighlightTextBrushKey}" Color="#1D2B44"/>
+                <SolidColorBrush x:Key="{x:Static SystemColors.InactiveSelectionHighlightTextBrushKey}" Color="#1D2B44"/>
+            </Style.Resources>
+        </Style>
+
+        <!-- Чтобы не появлялась стандартная “фокусная” рамка пунктиром -->
+        <Style TargetType="{x:Type TreeViewItem}">
+            <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+        </Style>
+
+        <!-- Обводка поля -->
+        <Style x:Key="PdFieldBorderThin" TargetType="Border">
+            <Setter Property="CornerRadius" Value="12"/>
+            <Setter Property="Background" Value="#edf2fb"/>
+            <Setter Property="BorderBrush" Value="{StaticResource PdBlue}"/>
+            <Setter Property="BorderThickness" Value="2.5"/>
+            <Setter Property="Padding" Value="10,7"/>
+        </Style>
+
+        <!-- Текстовое поле внутри Border -->
+        <Style x:Key="PdTextBoxThin" TargetType="TextBox">
+            <Setter Property="Width" Value="352"/>
+            <Setter Property="Height" Value="28"/>
+            <Setter Property="FontSize" Value="18"/>
+            <Setter Property="FontFamily" Value="{StaticResource NunitoRegular}"/>
+            <Setter Property="Foreground" Value="{StaticResource PdText}"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Padding" Value="2,0"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+        </Style>
+
+        <!-- Пароль внутри Border -->
+        <Style x:Key="PdPasswordBoxThin" TargetType="PasswordBox">
+            <Setter Property="Width" Value="352"/>
+            <Setter Property="Height" Value="28"/>
+            <Setter Property="FontSize" Value="18"/>
+            <Setter Property="FontFamily" Value="{StaticResource NunitoRegular}"/>
+            <Setter Property="Foreground" Value="{StaticResource PdText}"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Padding" Value="2,0"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+        </Style>
+
+        <!-- Базовый стиль для TextBox -->
+        <Style TargetType="TextBox">
+            <Setter Property="Width" Value="352"/>
+            <Setter Property="Height" Value="28"/>
+            <Setter Property="FontSize" Value="18"/>
+            <Setter Property="FontFamily" Value="{StaticResource NunitoRegular}"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="Background" Value="#edf2fb"/>
+            <Setter Property="Foreground" Value="Black"/>
+            <Setter Property="Padding" Value="4,0,4,0"/>
+        </Style>
+
+        <!-- Базовый стиль для PasswordBox -->
+        <Style TargetType="PasswordBox">
+            <Setter Property="Width" Value="352"/>
+            <Setter Property="Height" Value="28"/>
+            <Setter Property="FontSize" Value="18"/>
+            <Setter Property="FontFamily" Value="{StaticResource NunitoRegular}"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="Background" Value="#edf2fb"/>
+            <Setter Property="Foreground" Value="Black"/>
+            <Setter Property="Padding" Value="4,0,4,0"/>
+        </Style>
+
+        <!-- Базовый стиль для Button -->
+        <Style TargetType="Button">
+            <Setter Property="Margin" Value="15 15"/>
+            <Setter Property="Padding" Value="5 5"/>
+            <Setter Property="FontFamily" Value="{StaticResource NunitoRegular}"/>
+            <Setter Property="FontSize" Value="18"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="Background" Value="#177EF3"/>
+            <Setter Property="BorderBrush" Value="#0074F7"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Height" Value="48"/>
+            <Setter Property="Width" Value="168"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="15">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="#0063D3"/>
+                                <Setter Property="BorderBrush" Value="#005BC1"/>
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter Property="Background" Value="#0063D3"/>
+                                <Setter Property="BorderBrush" Value="#005BC1"/>
+                                <Setter Property="Opacity" Value="0.8"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- Стиль для кнопки профиля -->
+        <Style x:Key="PdProfileButton" TargetType="Button">
+            <Setter Property="Width" Value="42"/>
+            <Setter Property="Height" Value="42"/>
+            <Setter Property="Padding" Value="0"/>
+            <Setter Property="Margin" Value="0"/>
+            <Setter Property="FontSize" Value="18"/>
+
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="Background" Value="{StaticResource PdBlue}"/>
+            <Setter Property="BorderBrush" Value="#0074F7"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Cursor" Value="Hand"/>
+
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="15">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="#0063D3"/>
+                                <Setter Property="BorderBrush" Value="#005BC1"/>
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter Property="Background" Value="#0063D3"/>
+                                <Setter Property="BorderBrush" Value="#005BC1"/>
+                                <Setter Property="Opacity" Value="0.8"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- Стиль для кнопок действий в панели фильтров -->
+        <Style x:Key="PdFilterActionButton" TargetType="Button">
+            <Setter Property="Height" Value="42"/>
+            <Setter Property="Padding" Value="5 5"/>
+            <Setter Property="Margin" Value="0"/>
+            <Setter Property="FontFamily" Value="{StaticResource NunitoRegular}"/>
+            <Setter Property="FontSize" Value="18"/>
+
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="Background" Value="{StaticResource PdBlue}"/>
+            <Setter Property="BorderBrush" Value="#0074F7"/>
+            <Setter Property="BorderThickness" Value="1"/>
+
+            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="Cursor" Value="Hand"/>
+
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="15">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="#0063D3"/>
+                                <Setter Property="BorderBrush" Value="#005BC1"/>
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter Property="Background" Value="#0063D3"/>
+                                <Setter Property="BorderBrush" Value="#005BC1"/>
+                                <Setter Property="Opacity" Value="0.8"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- Контекстные меню -->
+        <Style TargetType="{x:Type MenuItem}">
+            <Setter Property="FontFamily" Value="{StaticResource NunitoRegular}"/>
+            <Setter Property="FontSize" Value="18"/>
+        </Style>
+        
+        <ContextMenu x:Key="ProductMenu">
+            <MenuItem Command="{x:Static cmd:DossierCommands.DeleteProduct}"
+                      CommandParameter="{Binding PlacementTarget.DataContext, RelativeSource={RelativeSource AncestorType=ContextMenu}}">
+                <MenuItem.Header>
+                    <TextBlock Text="Переместить изделие в корзину" FontSize="18"/>
+                </MenuItem.Header>
+            </MenuItem>
+        </ContextMenu>
+
+        <ContextMenu x:Key="CategoryMenu">
+            <MenuItem Command="{x:Static cmd:DossierCommands.AddFileToCategory}"
+                      CommandParameter="{Binding PlacementTarget.DataContext, RelativeSource={RelativeSource AncestorType=ContextMenu}}">
+                <MenuItem.Header>
+                    <TextBlock Text="Добавить документ в эту категорию" FontSize="18"/>
+                </MenuItem.Header>
+            </MenuItem>
+        </ContextMenu>
+
+        <ContextMenu x:Key="DocumentMenu">
+            <MenuItem Command="{x:Static cmd:DossierCommands.DeleteDocument}"
+                      CommandParameter="{Binding PlacementTarget.DataContext, RelativeSource={RelativeSource AncestorType=ContextMenu}}">
+
+                <MenuItem.Style>
+                    <Style TargetType="MenuItem">
+                        <Setter Property="Visibility" Value="Visible"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding PlacementTarget.DataContext.DocumentId,
+                                              RelativeSource={RelativeSource AncestorType=ContextMenu}}"
+                                         Value="{x:Null}">
+                                <Setter Property="Visibility" Value="Collapsed"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </MenuItem.Style>
+
+                <MenuItem.Header>
+                    <TextBlock Text="Переместить документ в корзину" FontSize="18"/>
+                </MenuItem.Header>
+            </MenuItem>
+        </ContextMenu>
+
+        <ContextMenu x:Key="FileMenu">
+            <MenuItem Command="{x:Static cmd:DossierCommands.OpenFile}"
+                      CommandParameter="{Binding PlacementTarget.DataContext, RelativeSource={RelativeSource AncestorType=ContextMenu}}">
+                <MenuItem.Header>
+                    <TextBlock Text="Открыть" FontSize="18"/>
+                </MenuItem.Header>
+            </MenuItem>
+
+            <MenuItem Command="{x:Static cmd:DossierCommands.AddChildFile}"
+                      CommandParameter="{Binding PlacementTarget.DataContext, RelativeSource={RelativeSource AncestorType=ContextMenu}}">
+                <MenuItem.Header>
+                    <TextBlock Text="Добавить дочерний документ" FontSize="18"/>
+                </MenuItem.Header>
+            </MenuItem>
+
+            <Separator/>
+
+            <MenuItem Command="{x:Static cmd:DossierCommands.ChangeDocumentCategory}"
+                      CommandParameter="{Binding PlacementTarget.DataContext, RelativeSource={RelativeSource AncestorType=ContextMenu}}">
+
+                <MenuItem.Style>
+                    <Style TargetType="MenuItem">
+                        <Setter Property="Visibility" Value="Collapsed"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding PlacementTarget.DataContext.ParentDocumentId,
+                                              RelativeSource={RelativeSource AncestorType=ContextMenu}}"
+                                         Value="{x:Null}">
+                                <Setter Property="Visibility" Value="Visible"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </MenuItem.Style>
+
+                <MenuItem.Header>
+                    <TextBlock Text="Изменить категорию" FontSize="18"/>
+                </MenuItem.Header>
+            </MenuItem>
+
+            <MenuItem Command="{x:Static cmd:DossierCommands.EditFile}"
+                      CommandParameter="{Binding PlacementTarget.DataContext, RelativeSource={RelativeSource AncestorType=ContextMenu}}">
+                <MenuItem.Header>
+                    <TextBlock Text="Редактировать данные о документе" FontSize="18"/>
+                </MenuItem.Header>
+            </MenuItem>
+
+            <MenuItem Command="{x:Static cmd:DossierCommands.FileProperties}"
+                      CommandParameter="{Binding PlacementTarget.DataContext, RelativeSource={RelativeSource AncestorType=ContextMenu}}">
+                <MenuItem.Header>
+                    <TextBlock Text="Свойства" FontSize="18"/>
+                </MenuItem.Header>
+            </MenuItem>
+
+            <Separator/>
+
+            <MenuItem Command="{x:Static cmd:DossierCommands.DeleteDocument}"
+          CommandParameter="{Binding PlacementTarget.DataContext, RelativeSource={RelativeSource AncestorType=ContextMenu}}">
+                <MenuItem.Header>
+                    <TextBlock Text="Переместить документ в корзину" FontSize="18"/>
+                </MenuItem.Header>
+            </MenuItem>
+        </ContextMenu>
+
+        <HierarchicalDataTemplate DataType="{x:Type tree:TreeNode}" ItemsSource="{Binding Children}">
+            <Border CornerRadius="10"
+            Padding="10,4"
+            Margin="0,2">
+
+                <Border.Style>
+                    <Style TargetType="Border">
+                        <Setter Property="Background" Value="Transparent"/>
+                        <Setter Property="BorderThickness" Value="1"/>
+                        <Setter Property="BorderBrush" Value="{StaticResource PdTreePillBorder}"/>
+
+                        <Style.Triggers>
+
+                            <!-- Изделие -->
+                            <DataTrigger Binding="{Binding NodeType}" Value="{x:Static tree:NodeType.Product}">
+                                <Setter Property="Background" Value="{StaticResource PdTreeProduct}"/>
+                            </DataTrigger>
+
+                            <!-- Категория -->
+                            <DataTrigger Binding="{Binding NodeType}" Value="{x:Static tree:NodeType.Category}">
+                                <Setter Property="Background" Value="{StaticResource PdTreeCategory}"/>
+                            </DataTrigger>
+
+                            <!-- Документ (по умолчанию дочерний) -->
+                            <DataTrigger Binding="{Binding NodeType}" Value="{x:Static tree:NodeType.Document}">
+                                <Setter Property="Background" Value="{StaticResource PdTreeDocChild}"/>
+                            </DataTrigger>
+
+                            <!-- Корневой документ -->
+                            <MultiDataTrigger>
+                                <MultiDataTrigger.Conditions>
+                                    <Condition Binding="{Binding NodeType}" Value="{x:Static tree:NodeType.Document}"/>
+                                    <Condition Binding="{Binding ParentDocumentId}" Value="{x:Null}"/>
+                                </MultiDataTrigger.Conditions>
+                                <Setter Property="Background" Value="{StaticResource PdTreeDocRoot}"/>
+                            </MultiDataTrigger>
+
+                            <!-- Файлы — отдельный цвет -->
+                            <DataTrigger Binding="{Binding NodeType}" Value="{x:Static tree:NodeType.File}">
+                                <Setter Property="Background" Value="{StaticResource PdTreeFile}"/>
+                            </DataTrigger>
+
+                            <!-- Нет документов — самый светлый -->
+                            <MultiDataTrigger>
+                                <MultiDataTrigger.Conditions>
+                                    <Condition Binding="{Binding NodeType}" Value="{x:Static tree:NodeType.Document}"/>
+                                    <Condition Binding="{Binding DocumentId}" Value="{x:Null}"/>
+                                </MultiDataTrigger.Conditions>
+                                <Setter Property="Background" Value="{StaticResource PdTreeNoDocs}"/>
+                            </MultiDataTrigger>
+
+                            <!-- Hover: мягкая синяя обводка -->
+                            <DataTrigger Binding="{Binding IsMouseOver, RelativeSource={RelativeSource AncestorType=TreeViewItem}}"
+                                 Value="True">
+                                <Setter Property="BorderBrush" Value="#7A177EF3"/>
+                            </DataTrigger>
+
+                            <!-- Selected -->
+                            <DataTrigger Binding="{Binding IsSelected, RelativeSource={RelativeSource AncestorType=TreeViewItem}}"
+                                 Value="True">
+                                <Setter Property="BorderBrush" Value="{StaticResource PdBlue}"/>
+                                <Setter Property="BorderThickness" Value="2"/>
+                            </DataTrigger>
+
+                        </Style.Triggers>
+                    </Style>
+                </Border.Style>
+
+                <TextBlock Text="{Binding DisplayName}"
+                   FontSize="18"
+                   Foreground="{StaticResource PdText}"/>
+            </Border>
+        </HierarchicalDataTemplate>
+
+    </Application.Resources>
+</Application>

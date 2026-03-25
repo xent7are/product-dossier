@@ -1,0 +1,186 @@
+﻿<Window x:Class="ProductDossier.EditFileWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        mc:Ignorable="d"
+        Title="Редактирование данных о документе"
+        Width="620"
+        SizeToContent="Height"
+        WindowStartupLocation="CenterOwner"
+        ResizeMode="NoResize"
+        ShowInTaskbar="False"
+        Background="#EDF2FB">
+
+    <Window.Resources>
+        <!-- Вторичная кнопка в стилистике PdFilterActionButton -->
+        <Style x:Key="PdSecondaryActionButton"
+           TargetType="Button"
+           BasedOn="{StaticResource PdFilterActionButton}">
+            <Setter Property="Background" Value="#E9F0FF"/>
+            <Setter Property="BorderBrush" Value="#9FB9E8"/>
+            <Setter Property="Foreground" Value="{StaticResource PdText}"/>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#0063D3"/>
+                    <Setter Property="BorderBrush" Value="#005BC1"/>
+                    <Setter Property="Foreground" Value="White"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+    </Window.Resources>
+
+    <Border CornerRadius="18"
+            Background="#D7E5FF"
+            Margin="16"
+            Padding="14">
+
+        <Border CornerRadius="14"
+                Background="White"
+                BorderBrush="#9FB9E8"
+                BorderThickness="1.5"
+                Padding="18">
+
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="14"/>
+
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="12"/>
+
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="12"/>
+
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="12"/>
+
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="18"/>
+
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <TextBlock Text="Редактирование данных о документе"
+                           FontSize="22"
+                           FontWeight="Bold"
+                           TextAlignment="Center"
+                           Foreground="{StaticResource PdText}"/>
+
+                <!-- Номер -->
+                <Grid Grid.Row="2">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="8"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+
+                    <TextBlock Grid.Row="0"
+                               Text="Номер документа"
+                               Foreground="{StaticResource PdText}"/>
+
+                    <Border Grid.Row="2" Style="{StaticResource PdFieldBorderThin}">
+                        <TextBox x:Name="tbDocNumber"
+                                 Style="{StaticResource PdTextBoxThin}"
+                                 Width="Auto"
+                                 HorizontalAlignment="Stretch"
+                                 MaxLength="80"/>
+                    </Border>
+                </Grid>
+
+                <!-- Название -->
+                <Grid Grid.Row="4">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="8"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+
+                    <TextBlock Grid.Row="0"
+                               Text="Название документа"
+                               Foreground="{StaticResource PdText}"/>
+
+                    <Border Grid.Row="2" Style="{StaticResource PdFieldBorderThin}">
+                        <TextBox x:Name="tbDocName"
+                                 Style="{StaticResource PdTextBoxThin}"
+                                 Width="Auto"
+                                 HorizontalAlignment="Stretch"
+                                 MaxLength="120"/>
+                    </Border>
+                </Grid>
+
+                <!-- Статус -->
+                <Grid Grid.Row="6">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="8"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+
+                    <TextBlock Grid.Row="0"
+                               Text="Статус документа"
+                               Foreground="{StaticResource PdText}"/>
+
+                    <Border Grid.Row="2" Style="{StaticResource PdFieldBorderThin}">
+                        <ComboBox x:Name="cbStatus"
+                                  Background="Transparent"
+                                  BorderThickness="0"
+                                  Height="26"
+                                  FontSize="16"/>
+                    </Border>
+                </Grid>
+
+                <!-- Файл -->
+                <Grid Grid.Row="8">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="8"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+
+                    <TextBlock Grid.Row="0"
+                               Text="Файл (можно заменить)"
+                               Foreground="{StaticResource PdText}"/>
+
+                    <Border Grid.Row="2" Style="{StaticResource PdFieldBorderThin}">
+                        <TextBox x:Name="tbSelectedFile"
+                                 Style="{StaticResource PdTextBoxThin}"
+                                 Width="Auto"
+                                 HorizontalAlignment="Stretch"
+                                 IsReadOnly="True"/>
+                    </Border>
+                </Grid>
+
+                <!-- Кнопки -->
+                <Grid Grid.Row="10">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="10"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="10"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+
+                    <Button Grid.Column="1"
+                            Style="{StaticResource PdSecondaryActionButton}"
+                            Width="160"
+                            Content="Выбрать файл"
+                            Click="btnPick_Click"/>
+
+                    <Button Grid.Column="3"
+                            Style="{StaticResource PdSecondaryActionButton}"
+                            Width="140"
+                            Content="Отмена"
+                            Click="btnCancel_Click"/>
+
+                    <Button Grid.Column="5"
+                            Style="{StaticResource PdFilterActionButton}"
+                            Width="160"
+                            Content="Сохранить"
+                            Click="btnSave_Click"/>
+                </Grid>
+            </Grid>
+        </Border>
+    </Border>
+</Window>

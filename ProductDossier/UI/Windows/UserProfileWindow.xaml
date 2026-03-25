@@ -1,0 +1,203 @@
+﻿<Window x:Class="ProductDossier.UserProfileWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        mc:Ignorable="d"
+        Title="Профиль пользователя"
+        Width="620"
+        SizeToContent="Height"
+        WindowStartupLocation="CenterOwner"
+        ResizeMode="NoResize"
+        ShowInTaskbar="False"
+        Background="#EDF2FB">
+
+    <Window.Resources>
+        <!-- Вторичная кнопка в стилистике PdFilterActionButton -->
+        <Style x:Key="PdSecondaryActionButton"
+           TargetType="Button"
+           BasedOn="{StaticResource PdFilterActionButton}">
+            <Setter Property="Background" Value="#E9F0FF"/>
+            <Setter Property="BorderBrush" Value="#9FB9E8"/>
+            <Setter Property="Foreground" Value="{StaticResource PdText}"/>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#0063D3"/>
+                    <Setter Property="BorderBrush" Value="#005BC1"/>
+                    <Setter Property="Foreground" Value="White"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+    </Window.Resources>
+
+    <Border CornerRadius="18"
+            Background="#D7E5FF"
+            Margin="16"
+            Padding="14">
+
+        <Border CornerRadius="14"
+                Background="White"
+                BorderBrush="#9FB9E8"
+                BorderThickness="1.5"
+                Padding="18">
+
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="14"/>
+
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="12"/>
+
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="12"/>
+
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="12"/>
+
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="12"/>
+
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="18"/>
+
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <TextBlock Text="Профиль"
+                           FontSize="22"
+                           FontWeight="Bold"
+                           TextAlignment="Center"
+                           Foreground="{StaticResource PdText}"/>
+
+                <!-- Логин -->
+                <Grid Grid.Row="2">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="8"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+
+                    <TextBlock Grid.Row="0"
+                               Text="Логин"
+                               Foreground="{StaticResource PdText}"/>
+
+                    <Border Grid.Row="2" Style="{StaticResource PdFieldBorderThin}">
+                        <TextBox Style="{StaticResource PdTextBoxThin}"
+                                 Width="Auto"
+                                 HorizontalAlignment="Stretch"
+                                 IsReadOnly="True"
+                                 Text="{Binding LoginLine, Mode=OneWay}"/>
+                    </Border>
+                </Grid>
+
+                <!-- Фамилия -->
+                <Grid Grid.Row="4">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="8"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+
+                    <TextBlock Grid.Row="0"
+                               Text="Фамилия"
+                               Foreground="{StaticResource PdText}"/>
+
+                    <Border Grid.Row="2" Style="{StaticResource PdFieldBorderThin}">
+                        <TextBox Style="{StaticResource PdTextBoxThin}"
+                                 Width="Auto"
+                                 HorizontalAlignment="Stretch"
+                                 IsReadOnly="True"
+                                 Text="{Binding SurnameLine, Mode=OneWay}"/>
+                    </Border>
+                </Grid>
+
+                <!-- Имя -->
+                <Grid Grid.Row="6">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="8"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+
+                    <TextBlock Grid.Row="0"
+                               Text="Имя"
+                               Foreground="{StaticResource PdText}"/>
+
+                    <Border Grid.Row="2" Style="{StaticResource PdFieldBorderThin}">
+                        <TextBox Style="{StaticResource PdTextBoxThin}"
+                                 Width="Auto"
+                                 HorizontalAlignment="Stretch"
+                                 IsReadOnly="True"
+                                 Text="{Binding NameLine, Mode=OneWay}"/>
+                    </Border>
+                </Grid>
+
+                <!-- Отчество -->
+                <Grid Grid.Row="8">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="8"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+
+                    <TextBlock Grid.Row="0"
+                               Text="Отчество"
+                               Foreground="{StaticResource PdText}"/>
+
+                    <Border Grid.Row="2" Style="{StaticResource PdFieldBorderThin}">
+                        <TextBox Style="{StaticResource PdTextBoxThin}"
+                                 Width="Auto"
+                                 HorizontalAlignment="Stretch"
+                                 IsReadOnly="True"
+                                 Text="{Binding PatronymicLine, Mode=OneWay}"/>
+                    </Border>
+                </Grid>
+
+                <!-- Роль -->
+                <Grid Grid.Row="10">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="8"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+
+                    <TextBlock Grid.Row="0"
+                               Text="Роль"
+                               Foreground="{StaticResource PdText}"/>
+
+                    <Border Grid.Row="2" Style="{StaticResource PdFieldBorderThin}">
+                        <TextBox Style="{StaticResource PdTextBoxThin}"
+                                 Width="Auto"
+                                 HorizontalAlignment="Stretch"
+                                 IsReadOnly="True"
+                                 Text="{Binding RoleLine, Mode=OneWay}"/>
+                    </Border>
+                </Grid>
+
+                <!-- Кнопки -->
+                <Grid Grid.Row="12">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="10"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+
+                    <Button Grid.Column="1"
+                            Style="{StaticResource PdSecondaryActionButton}"
+                            Width="140"
+                            Content="Закрыть"
+                            Click="btnClose_Click"/>
+
+                    <Button Grid.Column="3"
+                            Style="{StaticResource PdFilterActionButton}"
+                            Width="264"
+                            Content="Выйти из учетной записи"
+                            Click="btnLogout_Click"/>
+                </Grid>
+
+            </Grid>
+        </Border>
+    </Border>
+</Window>

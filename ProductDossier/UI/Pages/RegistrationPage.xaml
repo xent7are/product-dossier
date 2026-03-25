@@ -1,0 +1,115 @@
+﻿<Page x:Class="ProductDossier.RegistrationPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+      xmlns:local="clr-namespace:ProductDossier"
+      mc:Ignorable="d"
+      d:DesignHeight="780" d:DesignWidth="1140"
+      Title="Регистрация">
+
+    <Grid Background="#edf2fb">
+        <!-- Разметка страницы -->
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="9*"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="2*" />
+            <ColumnDefinition Width="3*" />
+            <ColumnDefinition Width="2*" />
+        </Grid.ColumnDefinitions>
+
+        <!-- Заголовок страницы -->
+        <TextBlock Grid.Row="0" Grid.Column="1" Text="Регистрация"
+                   FontSize="36" FontWeight="Bold" FontFamily="NunitoBold" Foreground="#177EF3"
+                   HorizontalAlignment="Center" VerticalAlignment="Center"/>
+
+        <!-- Область ввода данных: рамка как в модальных окнах -->
+        <Border Grid.Column="1" Grid.Row="1"
+                CornerRadius="18"
+                Background="#D7E5FF"
+                Padding="14">
+
+            <Border CornerRadius="14"
+                    Background="White"
+                    BorderBrush="#9FB9E8"
+                    BorderThickness="1.5"
+                    Padding="18">
+
+                <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+
+                    <!-- Поле с вводом фамилии -->
+                    <TextBlock Margin="25,0,0,0" Text="Введите фамилию"/>
+                    <Border Style="{StaticResource PdFieldBorderThin}" Margin="12">
+                        <TextBox Name="surnameTextBlock"
+                                 Style="{StaticResource PdTextBoxThin}"
+                                 MaxLength="20"
+                                 PreviewKeyDown="TextBox_PreviewKeyDown"
+                                 PreviewTextInput="FioTextBox_PreviewTextInput"/>
+                    </Border>
+
+                    <!-- Поле с вводом имени -->
+                    <TextBlock Margin="25,0,0,0" Text="Введите имя"/>
+                    <Border Style="{StaticResource PdFieldBorderThin}" Margin="12">
+                        <TextBox Name="nameTextBlock"
+                                 Style="{StaticResource PdTextBoxThin}"
+                                 MaxLength="20"
+                                 PreviewKeyDown="TextBox_PreviewKeyDown"
+                                 PreviewTextInput="FioTextBox_PreviewTextInput"/>
+                    </Border>
+
+                    <!-- Поле с вводом отчества -->
+                    <TextBlock Margin="25,0,0,0" Text="Введите отчество"/>
+                    <Border Style="{StaticResource PdFieldBorderThin}" Margin="12">
+                        <TextBox Name="patronymicTextBlock"
+                                 Style="{StaticResource PdTextBoxThin}"
+                                 MaxLength="20"
+                                 PreviewKeyDown="TextBox_PreviewKeyDown"
+                                 PreviewTextInput="FioTextBox_PreviewTextInput"/>
+                    </Border>
+
+                    <!-- Поле с вводом логина -->
+                    <TextBlock Margin="25,0,0,0" Text="Введите логин"/>
+                    <Border Style="{StaticResource PdFieldBorderThin}" Margin="12">
+                        <TextBox Name="loginTextBlock"
+                                 Style="{StaticResource PdTextBoxThin}"
+                                 MaxLength="20"
+                                 PreviewKeyDown="TextBox_PreviewKeyDown"
+                                 PreviewTextInput="LoginTextBox_PreviewTextInput"/>
+                    </Border>
+
+                    <!-- Поле с вводом пароля -->
+                    <TextBlock Margin="25,0,0,0" Text="Введите пароль"/>
+                    <Border Style="{StaticResource PdFieldBorderThin}" Margin="12">
+                        <PasswordBox Name="passwordTextBlock"
+                                     Style="{StaticResource PdPasswordBoxThin}"
+                                     MaxLength="20"
+                                     PreviewKeyDown="PasswordBox_PreviewKeyDown"
+                                     PreviewTextInput="PasswordBox_PreviewTextInput"/>
+                    </Border>
+
+                    <!-- Кнопка "Зарегистрироваться" -->
+                    <Button Name="buttonRegistration" Content="Зарегистрироваться"
+                            HorizontalAlignment="Center" VerticalAlignment="Center"
+                            Width="248" Margin="0, 10, 0, 0"
+                            Click="buttonRegistration_Click"/>
+                </StackPanel>
+
+            </Border>
+        </Border>
+
+        <!-- Кнопка назад -->
+        <Image Name="buttonBack"
+               MouseDown="buttonBack_MouseDown"
+               Source="/images\arrow.png"
+               Width="70" Height="70"
+               HorizontalAlignment="Left"
+               VerticalAlignment="Bottom"
+               Margin="15, 5"
+               Grid.Row="2"
+               Grid.Column="0"/>
+    </Grid>
+</Page>

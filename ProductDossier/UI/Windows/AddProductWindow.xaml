@@ -1,0 +1,182 @@
+﻿<Window x:Class="ProductDossier.AddProductWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        mc:Ignorable="d"
+        Title="Добавление изделия"
+        Width="620"
+        SizeToContent="Height"
+        WindowStartupLocation="CenterOwner"
+        ResizeMode="NoResize"
+        Background="#EDF2FB">
+
+    <Window.Resources>
+
+        <!-- Вторичная кнопка в стилистике PdFilterActionButton -->
+        <Style x:Key="PdSecondaryActionButton"
+           TargetType="Button"
+           BasedOn="{StaticResource PdFilterActionButton}">
+            <Setter Property="Background" Value="#E9F0FF"/>
+            <Setter Property="BorderBrush" Value="#9FB9E8"/>
+            <Setter Property="Foreground" Value="{StaticResource PdText}"/>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#0063D3"/>
+                    <Setter Property="BorderBrush" Value="#005BC1"/>
+                    <Setter Property="Foreground" Value="White"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+    </Window.Resources>
+
+    <!-- Внешняя карточка -->
+    <Border CornerRadius="18"
+            Background="#D7E5FF"
+            Margin="16"
+            Padding="14">
+
+        <!-- Внутренняя карточка -->
+        <Border CornerRadius="14"
+                Background="White"
+                BorderBrush="#9FB9E8"
+                BorderThickness="1.5"
+                Padding="18">
+
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="14"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="12"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="12"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="12"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="18"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <!-- Заголовок -->
+                <TextBlock Text="Добавление изделия"
+                           FontSize="22"
+                           FontWeight="Bold"
+                           TextAlignment="Center"
+                           Foreground="{StaticResource PdText}"/>
+
+                <!-- Номер изделия -->
+                <Grid Grid.Row="2">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="8"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+
+                    <TextBlock Grid.Row="0"
+                               Text="Номер изделия"
+                               Foreground="{StaticResource PdText}"/>
+
+                    <Border Grid.Row="2" Style="{StaticResource PdFieldBorderThin}">
+                        <TextBox Name="tbProductNumber"
+                                 Style="{StaticResource PdTextBoxThin}"
+                                 Width="Auto"
+                                 HorizontalAlignment="Stretch"
+                                 MaxLength="80"/>
+                    </Border>
+                </Grid>
+
+                <!-- Название изделия -->
+                <Grid Grid.Row="4">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="8"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+
+                    <TextBlock Grid.Row="0"
+                               Text="Название изделия"
+                               Foreground="{StaticResource PdText}"/>
+
+                    <Border Grid.Row="2" Style="{StaticResource PdFieldBorderThin}">
+                        <TextBox Name="tbProductName"
+                                 Style="{StaticResource PdTextBoxThin}"
+                                 Width="Auto"
+                                 HorizontalAlignment="Stretch"
+                                 MaxLength="160"/>
+                    </Border>
+                </Grid>
+
+                <!-- Статус -->
+                <Grid Grid.Row="6">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="8"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+
+                    <TextBlock Grid.Row="0"
+                               Text="Статус изделия"
+                               Foreground="{StaticResource PdText}"/>
+
+                    <Border Grid.Row="2" Style="{StaticResource PdFieldBorderThin}">
+                        <ComboBox Name="cbStatus"
+                                  Background="Transparent"
+                                  BorderThickness="0"
+                                  Height="26"
+                                  FontSize="16"/>
+                    </Border>
+                </Grid>
+
+                <!-- Описание -->
+                <Grid Grid.Row="8">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="8"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+
+                    <TextBlock Grid.Row="0"
+                               Text="Описание (необязательно)"
+                               Foreground="{StaticResource PdText}"/>
+
+                    <Border Grid.Row="2" Style="{StaticResource PdFieldBorderThin}">
+                        <TextBox Name="tbProductDescription"
+                                 Style="{StaticResource PdTextBoxThin}"
+                                 Width="Auto"
+                                 HorizontalAlignment="Stretch"
+                                 Height="96"
+                                 AcceptsReturn="True"
+                                 TextWrapping="Wrap"
+                                 VerticalContentAlignment="Top"
+                                 VerticalScrollBarVisibility="Auto"/>
+                    </Border>
+                </Grid>
+
+                <!-- Кнопки -->
+                <Grid Grid.Row="10">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="10"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+
+                    <Button Grid.Column="1"
+                            Style="{StaticResource PdSecondaryActionButton}"
+                            Width="140"
+                            Content="Отмена"
+                            Click="btnCancel_Click"/>
+
+                    <Button Grid.Column="3"
+                            Style="{StaticResource PdFilterActionButton}"
+                            Width="160"
+                            Content="Сохранить"
+                            Click="btnSave_Click"/>
+                </Grid>
+
+            </Grid>
+        </Border>
+    </Border>
+</Window>

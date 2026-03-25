@@ -1,0 +1,130 @@
+﻿<Window x:Class="ProductDossier.FilePropertiesWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        mc:Ignorable="d"
+        Title="Свойства файла"
+        Width="820"
+        SizeToContent="Height"
+        WindowStartupLocation="CenterOwner"
+        ResizeMode="NoResize"
+        ShowInTaskbar="False"
+        Background="#EDF2FB"
+        FontSize="18">
+
+    <Window.Resources>
+        <Style x:Key="PropLabel" TargetType="TextBlock">
+            <Setter Property="Foreground" Value="{StaticResource PdText}"/>
+            <Setter Property="FontWeight" Value="Normal"/>
+            <Setter Property="FontSize" Value="18"/>
+            <Setter Property="Margin" Value="0,0,0,4"/>
+            <Setter Property="VerticalAlignment" Value="Top"/>
+        </Style>
+
+        <Style x:Key="PropValue" TargetType="TextBlock">
+            <Setter Property="Foreground" Value="{StaticResource PdText}"/>
+            <Setter Property="FontWeight" Value="Normal"/>
+            <Setter Property="FontSize" Value="18"/>
+            <Setter Property="TextWrapping" Value="Wrap"/>
+            <Setter Property="VerticalAlignment" Value="Top"/>
+        </Style>
+    </Window.Resources>
+
+    <Border CornerRadius="18"
+            Background="#D7E5FF"
+            Margin="16"
+            Padding="14">
+
+        <Border CornerRadius="14"
+                Background="White"
+                BorderBrush="#9FB9E8"
+                BorderThickness="1.5"
+                Padding="18">
+
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="14"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="18"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <TextBlock Text="Свойства"
+                           FontSize="22"
+                           FontWeight="Bold"
+                           TextAlignment="Center"
+                           Foreground="{StaticResource PdText}"/>
+
+                <Grid Grid.Row="2">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="280"/>
+                        <ColumnDefinition Width="12"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="10"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="10"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="10"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="10"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="10"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="10"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="10"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="10"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+
+                    <TextBlock Grid.Row="0"  Grid.Column="0" Style="{StaticResource PropLabel}" Text="Изделие"/>
+                    <TextBlock Grid.Row="0"  Grid.Column="2" Style="{StaticResource PropValue}" x:Name="tbProduct"/>
+
+                    <TextBlock Grid.Row="2"  Grid.Column="0" Style="{StaticResource PropLabel}" Text="Категория"/>
+                    <TextBlock Grid.Row="2"  Grid.Column="2" Style="{StaticResource PropValue}" x:Name="tbCategory"/>
+
+                    <TextBlock Grid.Row="4"  Grid.Column="0" Style="{StaticResource PropLabel}" Text="Документ"/>
+                    <TextBlock Grid.Row="4"  Grid.Column="2" Style="{StaticResource PropValue}" x:Name="tbDocument"/>
+
+                    <TextBlock Grid.Row="6"  Grid.Column="0" Style="{StaticResource PropLabel}" Text="Статус"/>
+                    <TextBlock Grid.Row="6"  Grid.Column="2" Style="{StaticResource PropValue}" x:Name="tbStatus"/>
+
+                    <TextBlock Grid.Row="8"  Grid.Column="0" Style="{StaticResource PropLabel}" Text="Родительский документ"/>
+                    <TextBlock Grid.Row="8"  Grid.Column="2" Style="{StaticResource PropValue}" x:Name="tbParent"/>
+
+                    <TextBlock Grid.Row="10" Grid.Column="0" Style="{StaticResource PropLabel}" Text="Файл"/>
+                    <TextBlock Grid.Row="10" Grid.Column="2" Style="{StaticResource PropValue}" x:Name="tbFile"/>
+
+                    <TextBlock Grid.Row="12" Grid.Column="0" Style="{StaticResource PropLabel}" Text="Размер"/>
+                    <TextBlock Grid.Row="12" Grid.Column="2" Style="{StaticResource PropValue}" x:Name="tbSize"/>
+
+                    <TextBlock Grid.Row="14" Grid.Column="0" Style="{StaticResource PropLabel}" Text="Путь"/>
+                    <TextBlock Grid.Row="14" Grid.Column="2" Style="{StaticResource PropValue}" x:Name="tbPath"/>
+
+                    <TextBlock Grid.Row="16" Grid.Column="0" Style="{StaticResource PropLabel}" Text="Загружен / изменён"/>
+                    <TextBlock Grid.Row="16" Grid.Column="2" Style="{StaticResource PropValue}" x:Name="tbDates"/>
+                </Grid>
+
+                <Grid Grid.Row="4">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+
+                    <Button Grid.Column="1"
+                            Style="{StaticResource PdFilterActionButton}"
+                            Width="160"
+                            Content="Закрыть"
+                            Click="btnClose_Click"/>
+                </Grid>
+            </Grid>
+        </Border>
+    </Border>
+</Window>

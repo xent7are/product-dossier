@@ -1,0 +1,291 @@
+﻿<Window x:Class="ProductDossier.RecycleBinWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        mc:Ignorable="d"
+        Title="Корзина"
+        Width="1140"
+        Height="780"
+        WindowStartupLocation="CenterOwner"
+        ShowInTaskbar="False"
+        Background="#EDF2FB"
+        FontSize="18"
+        Closing="RecycleBinWindow_Closing">
+
+    <Window.Resources>
+        <Style x:Key="PdSecondaryActionButton"
+               TargetType="Button"
+               BasedOn="{StaticResource PdFilterActionButton}">
+            <Setter Property="Background" Value="#E9F0FF"/>
+            <Setter Property="BorderBrush" Value="#9FB9E8"/>
+            <Setter Property="Foreground" Value="{StaticResource PdText}"/>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#0063D3"/>
+                    <Setter Property="BorderBrush" Value="#005BC1"/>
+                    <Setter Property="Foreground" Value="White"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+    </Window.Resources>
+
+    <Border CornerRadius="18"
+            Background="#D7E5FF"
+            Margin="16"
+            Padding="14">
+
+        <Border CornerRadius="14"
+                Background="White"
+                BorderBrush="#9FB9E8"
+                BorderThickness="1.5"
+                Padding="18">
+
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="12"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="16"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <Grid Grid.Row="0">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="10"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+
+                    <TextBlock Text="Корзина"
+                               FontSize="20"
+                               FontWeight="Bold"
+                               Foreground="{StaticResource PdText}"
+                               HorizontalAlignment="Center"/>
+
+                    <Grid Grid.Row="2">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="12"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="12"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="12"/>
+                            <ColumnDefinition Width="260"/>
+                        </Grid.ColumnDefinitions>
+
+                        <StackPanel Grid.Column="0">
+                            <TextBlock Text="Поиск"
+                                       Foreground="{StaticResource PdText}"
+                                       Margin="2,0,0,6"/>
+                            <Border Style="{StaticResource PdFieldBorderThin}">
+                                <TextBox x:Name="tbSearch"
+                                         Background="Transparent"
+                                         BorderThickness="0"
+                                         Height="26"
+                                         FontSize="18"
+                                         VerticalContentAlignment="Center"
+                                         TextChanged="Filters_Changed"/>
+                            </Border>
+                        </StackPanel>
+
+                        <StackPanel Grid.Column="2">
+                            <TextBlock Text="Тип объекта"
+                                       Foreground="{StaticResource PdText}"
+                                       Margin="2,0,0,6"/>
+                            <Border Style="{StaticResource PdFieldBorderThin}">
+                                <ComboBox x:Name="cbObjectType"
+                                          Background="Transparent"
+                                          BorderThickness="0"
+                                          Height="26"
+                                          FontSize="18"
+                                          SelectionChanged="Filters_Changed">
+                                    <ComboBox.ItemTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding}" FontSize="18"/>
+                                        </DataTemplate>
+                                    </ComboBox.ItemTemplate>
+                                </ComboBox>
+                            </Border>
+                        </StackPanel>
+
+                        <StackPanel Grid.Column="4">
+                            <TextBlock Text="Фамилия/имя/отчество"
+                                       Foreground="{StaticResource PdText}"
+                                       Margin="2,0,0,6"/>
+                            <Border Style="{StaticResource PdFieldBorderThin}">
+                                <TextBox x:Name="tbDeletedBy"
+                                         Background="Transparent"
+                                         BorderThickness="0"
+                                         Height="26"
+                                         FontSize="18"
+                                         VerticalContentAlignment="Center"
+                                         TextChanged="Filters_Changed"/>
+                            </Border>
+                        </StackPanel>
+
+                        <Button Grid.Column="6"
+                                Content="Сбросить фильтры"
+                                Style="{StaticResource PdFilterActionButton}"
+                                Margin="0,24,0,0"
+                                Width="260"
+                                HorizontalAlignment="Left"
+                                Click="btnReset_Click"/>
+                    </Grid>
+                </Grid>
+
+                <Grid Grid.Row="2">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="2.2*"/>
+                        <ColumnDefinition Width="12"/>
+                        <ColumnDefinition Width="430"/>
+                    </Grid.ColumnDefinitions>
+
+                    <Grid Grid.Column="0">
+                        <TreeView x:Name="tvRecycleBin"
+                                  ItemsSource="{Binding TreeItems}"
+                                  Background="Transparent"
+                                  BorderThickness="0"
+                                  SelectedItemChanged="tvRecycleBin_SelectedItemChanged"
+                                  MouseDoubleClick="tvRecycleBin_MouseDoubleClick">
+                            <TreeView.ItemContainerStyle>
+                                <Style TargetType="TreeViewItem">
+                                    <!-- Все узлы корзины раскрываем сразу после построения дерева -->
+                                    <Setter Property="IsExpanded" Value="True"/>
+                                </Style>
+                            </TreeView.ItemContainerStyle>
+                        </TreeView>
+
+                        <TextBlock Text="Ничего не найдено"
+                                   FontSize="22"
+                                   FontWeight="SemiBold"
+                                   Foreground="#6B7A99"
+                                   HorizontalAlignment="Center"
+                                   VerticalAlignment="Center"
+                                   IsHitTestVisible="False">
+                            <TextBlock.Style>
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding ElementName=tvRecycleBin, Path=HasItems}" Value="False">
+                                            <Setter Property="Visibility" Value="Visible"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </TextBlock.Style>
+                        </TextBlock>
+                    </Grid>
+
+                    <Border Grid.Column="2"
+                            CornerRadius="14"
+                            Background="#F7FAFF"
+                            BorderBrush="#D4DEEE"
+                            BorderThickness="1.5"
+                            Padding="14">
+
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="12"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="8"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="8"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="8"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="8"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="8"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
+
+                            <TextBlock Text="Сведения"
+                                       FontSize="20"
+                                       FontWeight="Bold"
+                                       Foreground="{StaticResource PdText}"/>
+
+                            <StackPanel Grid.Row="2">
+                                <TextBlock Text="Выбранный узел"
+                                           Foreground="#5D6B85"
+                                           FontSize="15"/>
+                                <TextBlock Text="{Binding SelectedNodeTitle}"
+                                           TextWrapping="Wrap"
+                                           Foreground="{StaticResource PdText}"/>
+                            </StackPanel>
+
+                            <StackPanel Grid.Row="4">
+                                <TextBlock Text="Тип узла"
+                                           Foreground="#5D6B85"
+                                           FontSize="15"/>
+                                <TextBlock Text="{Binding SelectedNodeType}"
+                                           TextWrapping="Wrap"
+                                           Foreground="{StaticResource PdText}"/>
+                            </StackPanel>
+
+                            <StackPanel Grid.Row="6">
+                                <TextBlock Text="Действие будет выполнено для"
+                                           Foreground="#5D6B85"
+                                           FontSize="15"/>
+                                <TextBlock Text="{Binding SelectedActionTarget}"
+                                           TextWrapping="Wrap"
+                                           Foreground="{StaticResource PdText}"/>
+                            </StackPanel>
+
+                            <StackPanel Grid.Row="8">
+                                <TextBlock Text="Дата удаления"
+                                           Foreground="#5D6B85"
+                                           FontSize="15"/>
+                                <TextBlock Text="{Binding SelectedDeletedAt}"
+                                           TextWrapping="Wrap"
+                                           Foreground="{StaticResource PdText}"/>
+                            </StackPanel>
+
+                            <StackPanel Grid.Row="10">
+                                <TextBlock Text="Кем удалено"
+                                           Foreground="#5D6B85"
+                                           FontSize="15"/>
+                                <TextBlock Text="{Binding SelectedDeletedBy}"
+                                           TextWrapping="Wrap"
+                                           Foreground="{StaticResource PdText}"/>
+                            </StackPanel>
+
+                            <StackPanel Grid.Row="12">
+                                <TextBlock Text="Путь файла"
+                                           Foreground="#5D6B85"
+                                           FontSize="15"/>
+                                <TextBlock Text="{Binding SelectedFilePath}"
+                                           TextWrapping="Wrap"
+                                           Foreground="{StaticResource PdText}"/>
+                            </StackPanel>
+                        </Grid>
+                    </Border>
+                </Grid>
+
+                <Grid Grid.Row="4">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="10"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+
+                    <Button Grid.Column="1"
+                            x:Name="btnRestore"
+                            Style="{StaticResource PdFilterActionButton}"
+                            Width="170"
+                            Content="Восстановить"
+                            Click="btnRestore_Click"/>
+
+                    <Button Grid.Column="3"
+                            x:Name="btnDeletePermanently"
+                            Style="{StaticResource PdSecondaryActionButton}"
+                            Width="250"
+                            Content="Удалить окончательно"
+                            Visibility="Collapsed"
+                            Click="btnDeletePermanently_Click"/>
+                </Grid>
+            </Grid>
+        </Border>
+    </Border>
+</Window>

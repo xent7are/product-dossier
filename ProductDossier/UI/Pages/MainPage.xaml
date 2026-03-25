@@ -1,0 +1,396 @@
+﻿<Page x:Class="ProductDossier.MainPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+      xmlns:local="clr-namespace:ProductDossier"
+      xmlns:tree="clr-namespace:ProductDossier.UI.Tree"
+      xmlns:cmd="clr-namespace:ProductDossier.UI.Commands"
+      mc:Ignorable="d"
+      d:DesignHeight="780" d:DesignWidth="1140"
+      Title="MainPage">
+
+    <Page.CommandBindings>
+        <CommandBinding Command="{x:Static cmd:DossierCommands.AddFileToCategory}"
+                        Executed="AddFileToCategory_Executed"/>
+        <CommandBinding Command="{x:Static cmd:DossierCommands.AddChildFile}"
+                        Executed="AddChildFile_Executed"/>
+        <CommandBinding Command="{x:Static cmd:DossierCommands.OpenFile}"
+                        Executed="OpenFile_Executed"/>
+        <CommandBinding Command="{x:Static cmd:DossierCommands.ChangeDocumentCategory}"
+                        Executed="ChangeDocumentCategory_Executed"/>
+        <CommandBinding Command="{x:Static cmd:DossierCommands.EditFile}"
+                        Executed="EditFile_Executed"/>
+        <CommandBinding Command="{x:Static cmd:DossierCommands.FileProperties}"
+                        Executed="FileProperties_Executed"/>
+        <CommandBinding Command="{x:Static cmd:DossierCommands.DeleteDocument}"
+                        Executed="DeleteDocument_Executed"/>
+        <CommandBinding Command="{x:Static cmd:DossierCommands.DeleteProduct}"
+                        Executed="DeleteProduct_Executed"/>
+    </Page.CommandBindings>
+
+    <Grid Background="#EDF2FB">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!-- Панель фильтров -->
+        <Border Grid.Row="0"
+                CornerRadius="18"
+                Background="#D7E5FF"
+                Margin="16,16,16,8"
+                Padding="14">
+
+            <Border CornerRadius="14"
+                    Background="White"
+                    BorderBrush="#9FB9E8"
+                    BorderThickness="1.5"
+                    Padding="18">
+
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+
+                    <!-- Заголовок и кнопки -->
+                    <Grid Grid.Row="0" Margin="0,0,0,10">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+
+                        <!-- Кнопка пользователя (профиль) -->
+                        <StackPanel Grid.Column="0" Orientation="Horizontal">
+                            <Button Name="btnProfile"
+                                Style="{StaticResource PdProfileButton}"
+                                ToolTip="{Binding CurrentUserLabel}"
+                                Click="btnProfile_Click">
+                                <Image Source="\images\profile.png"
+                                   Width="22" Height="22"
+                                   Stretch="Uniform"/>
+                            </Button>
+
+                            <Button Name="btnHistory"
+                                Style="{StaticResource PdProfileButton}"
+                                ToolTip="История изменений"
+                                Margin="10,0,0,0"
+                                Click="btnHistory_Click">
+                                <Image Source="\images\history_table.png"
+                                   Width="22" Height="22"
+                                   Stretch="Uniform"/>
+                            </Button>
+                        </StackPanel>
+
+                        <!-- Заголовок по центру -->
+                        <TextBlock Grid.Column="1"
+                                   Text="Фильтры"
+                                   HorizontalAlignment="Center"
+                                   VerticalAlignment="Center"
+                                   FontSize="20"
+                                   FontWeight="Bold"
+                                   Foreground="#1D2B44"/>
+
+                        <Button Name="btnRoles"
+                                    Grid.Column="2"
+                                    Style="{StaticResource PdProfileButton}"
+                                    ToolTip="Управление ролями"
+                                    Visibility="Collapsed"
+                                    Margin="0,0,10,0"
+                                    Click="btnRoles_Click">
+                            <Image Source="\images\role.png"
+                                       Width="22" Height="22"
+                                       Stretch="Uniform"/>
+                        </Button>
+
+                        <Button Name="btnChangePassword"
+                            Grid.Column="3"
+                            Style="{StaticResource PdProfileButton}"
+                            ToolTip="Смена пароля пользователя"
+                            Visibility="Collapsed"
+                            Margin="0,0,10,0"
+                            Click="btnChangePassword_Click">
+
+                            <Image Source="\images\password.png"
+                                       Width="22" Height="22"
+                                       Stretch="Uniform"/>
+                        </Button>
+
+                        <Button Name="btnRecycleBin"
+                                Grid.Column="4"
+                                Style="{StaticResource PdProfileButton}"
+                                ToolTip="Recycle bin"
+                                Visibility="Collapsed"
+                                Margin="0,0,10,0"
+                                Click="btnRecycleBin_Click">
+                            
+                            <Image Source="\images\trash.png"
+                                       Width="22" Height="22"
+                                       Stretch="Uniform"/>
+                        </Button>
+
+                        <!-- Кнопка настроек -->
+                        <Button Name="btnSettings"
+                                Grid.Column="5"
+                                Style="{StaticResource PdProfileButton}"
+                                ToolTip="Открыть файл конфигурации"
+                                Click="btnSettings_Click"
+                                HorizontalAlignment="Right"
+                                Width="42">
+                            <Image Source="\images\file.png"
+                                   Width="22" Height="22"
+                                   Stretch="Uniform"/>
+                        </Button>
+                    </Grid>
+
+                    <!-- Блоки фильтров -->
+                    <Grid Grid.Row="1">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="260"/>
+                            <ColumnDefinition Width="260"/>
+                            <ColumnDefinition Width="260"/>
+                        </Grid.ColumnDefinitions>
+
+                        <StackPanel Grid.Row="0" Grid.Column="0" Margin="0,0,12,10">
+                            <TextBlock Text="Изделие (номер/название)"
+                                       Margin="2,0,0,6"
+                                       Foreground="#1D2B44"
+                                       FontSize="18"/>
+
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="42"/>
+                                </Grid.ColumnDefinitions>
+
+                                <Border Grid.Column="0"
+                                        Style="{StaticResource PdFieldBorderThin}"
+                                        Margin="0,0,10,0">
+                                    <TextBox Name="tbProductSearch"
+                                             Background="Transparent"
+                                             BorderThickness="0"
+                                             Height="26"
+                                             FontSize="18"
+                                             VerticalContentAlignment="Center"
+                                             TextChanged="Filters_Changed"/>
+                                </Border>
+
+                                <Button Grid.Column="1"
+                                        Content="+"
+                                        Style="{StaticResource PdProfileButton}"
+                                        FontSize="22"
+                                        FontWeight="Bold"
+                                        Click="btnAddProduct_Click"/>
+                            </Grid>
+                        </StackPanel>
+
+                        <StackPanel Grid.Row="0" Grid.Column="1" Margin="0,0,12,10">
+                            <TextBlock Text="Документ (номер/название)"
+                                       Margin="2,0,0,6"
+                                       Foreground="#1D2B44"
+                                       FontSize="18"/>
+                            <Border Style="{StaticResource PdFieldBorderThin}">
+                                <TextBox Name="tbDocumentSearch"
+                                         Background="Transparent"
+                                         BorderThickness="0"
+                                         Height="26"
+                                         FontSize="18"
+                                         VerticalContentAlignment="Center"
+                                         TextChanged="Filters_Changed"/>
+                            </Border>
+                        </StackPanel>
+
+                        <StackPanel Grid.Row="0" Grid.Column="2" Margin="0,0,0,10">
+                            <TextBlock Text="Категория документа"
+                                       Margin="2,0,0,6"
+                                       Foreground="#1D2B44"
+                                       FontSize="18"/>
+
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="42"/>
+                                </Grid.ColumnDefinitions>
+
+                                <Border Grid.Column="0"
+                                        Style="{StaticResource PdFieldBorderThin}"
+                                        Margin="0,0,10,0">
+
+                                    <ComboBox Name="cbCategory"
+                                              Background="Transparent"
+                                              BorderThickness="0"
+                                              Height="26"
+                                              FontSize="18"
+                                              SelectionChanged="Filters_Changed">
+
+                                        <ComboBox.ItemTemplate>
+                                            <DataTemplate>
+                                                <TextBlock FontSize="18">
+                                                    <TextBlock.Text>
+                                                        <PriorityBinding>
+                                                            <Binding Path="NameDocumentCategory"/>
+                                                            <Binding/>
+                                                        </PriorityBinding>
+                                                    </TextBlock.Text>
+                                                </TextBlock>
+                                            </DataTemplate>
+                                        </ComboBox.ItemTemplate>
+
+                                    </ComboBox>
+                                </Border>
+
+                                <Button Grid.Column="1"
+                                        Content="+"
+                                        Style="{StaticResource PdProfileButton}"
+                                        FontSize="22"
+                                        FontWeight="Bold"
+                                        Click="btnAddCategory_Click"/>
+                            </Grid>
+                        </StackPanel>
+
+                        <!-- 2 строка -->
+                        <StackPanel Grid.Row="1" Grid.Column="0" Margin="0,0,12,0">
+                            <TextBlock Text="Статус изделия"
+                                       Margin="2,0,0,6"
+                                       Foreground="#1D2B44"
+                                       FontSize="18"/>
+                            <Border Style="{StaticResource PdFieldBorderThin}">
+
+                                <ComboBox Name="cbProductStatus"
+                                          Background="Transparent"
+                                          BorderThickness="0"
+                                          Height="26"
+                                          FontSize="18"
+                                          SelectionChanged="Filters_Changed">
+
+                                    <ComboBox.ItemTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding}" FontSize="18"/>
+                                        </DataTemplate>
+                                    </ComboBox.ItemTemplate>
+
+                                </ComboBox>
+                            </Border>
+                        </StackPanel>
+
+                        <StackPanel Grid.Row="1" Grid.Column="1" Margin="0,0,12,0">
+                            <TextBlock Text="Статус документа"
+                                       Margin="2,0,0,6"
+                                       Foreground="#1D2B44"
+                                       FontSize="18"/>
+                            <Border Style="{StaticResource PdFieldBorderThin}">
+
+                                <ComboBox Name="cbDocumentStatus"
+                                          Background="Transparent"
+                                          BorderThickness="0"
+                                          Height="26"
+                                          FontSize="18"
+                                          SelectionChanged="Filters_Changed">
+
+                                    <ComboBox.ItemTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding}" FontSize="18"/>
+                                        </DataTemplate>
+                                    </ComboBox.ItemTemplate>
+
+                                </ComboBox>
+                            </Border>
+                        </StackPanel>
+
+                        <Button Grid.Row="1" Grid.Column="2"
+                                Content="Сбросить фильтры"
+                                Style="{StaticResource PdFilterActionButton}"
+                                Margin="0,24,0,0"
+                                Width="260"
+                                HorizontalAlignment="Left"
+                                Click="btnReset_Click"/>
+                    </Grid>
+                </Grid>
+            </Border>
+        </Border>
+
+        <!-- Дерево -->
+        <Border Grid.Row="1"
+                CornerRadius="18"
+                Background="#D7E5FF"
+                Margin="16, 8, 16, 8"
+                Padding="12">
+
+            <Border CornerRadius="14"
+                    Background="White"
+                    BorderBrush="#9FB9E8"
+                    BorderThickness="1.5"
+                    Padding="10">
+
+                <Grid>
+                    <TreeView Name="tvDossier"
+                              MouseDoubleClick="tvDossier_MouseDoubleClick"
+                              ItemsSource="{Binding TreeItems}">
+
+                        <TreeView.ItemContainerStyle>
+                            <Style TargetType="TreeViewItem">
+                                <Setter Property="IsExpanded" Value="True"/>
+                                <Style.Triggers>
+
+                                    <!-- Изделие -->
+                                    <DataTrigger Binding="{Binding NodeType}" Value="{x:Static tree:NodeType.Product}">
+                                        <Setter Property="ContextMenu" Value="{StaticResource ProductMenu}"/>
+                                    </DataTrigger>
+
+                                    <!-- Категория -->
+                                    <DataTrigger Binding="{Binding NodeType}" Value="{x:Static tree:NodeType.Category}">
+                                        <Setter Property="ContextMenu" Value="{StaticResource CategoryMenu}"/>
+                                    </DataTrigger>
+
+                                    <!-- Документ -->
+                                    <DataTrigger Binding="{Binding NodeType}" Value="{x:Static tree:NodeType.Document}">
+                                        <Setter Property="ContextMenu" Value="{StaticResource DocumentMenu}"/>
+                                    </DataTrigger>
+
+                                    <!-- Файл -->
+                                    <DataTrigger Binding="{Binding NodeType}" Value="{x:Static tree:NodeType.File}">
+                                        <Setter Property="ContextMenu" Value="{StaticResource FileMenu}"/>
+                                    </DataTrigger>
+
+                                </Style.Triggers>
+                            </Style>
+                        </TreeView.ItemContainerStyle>
+
+                    </TreeView>
+
+                    <TextBlock Text="Ничего не найдено"
+                               FontSize="22"
+                               FontWeight="SemiBold"
+                               Foreground="#6B7A99"
+                               HorizontalAlignment="Center"
+                               VerticalAlignment="Center"
+                               IsHitTestVisible="False">
+                        <TextBlock.Style>
+                            <Style TargetType="TextBlock">
+                                <Setter Property="Visibility" Value="Collapsed"/>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding ElementName=tvDossier, Path=HasItems}" Value="False">
+                                        <Setter Property="Visibility" Value="Visible"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </TextBlock.Style>
+                    </TextBlock>
+                </Grid>
+
+            </Border>
+        </Border>
+    </Grid>
+</Page>
+
